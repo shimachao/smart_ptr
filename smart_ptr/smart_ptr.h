@@ -34,6 +34,11 @@ smart_ptr::smart_ptr(T*p)
 template <typename T>
 smart_ptr::~smart_ptr()
 {
+	if (m_use_count > 0)
+	{
+		m_use_count--;
+	}
+
 	if (m_use_count == 0 && m_pobject)
 	{
 		delete m_pobject;
