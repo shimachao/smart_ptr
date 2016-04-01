@@ -7,7 +7,10 @@ class smart_ptr
 {
 public:
 	smart_ptr();
+	explicit smart_ptr(T*);
 	~smart_ptr();
+
+	T* get();
 
 private:
 	unsigned m_use_count = 0;
@@ -19,6 +22,15 @@ smart_ptr::smart_ptr()
 {
 }
 
+
+template <typename T>
+smart_ptr::smart_ptr(T*p)
+{
+	m_pobject = p;
+	m_use_count = 1;
+}
+
+
 template <typename T>
 smart_ptr::~smart_ptr()
 {
@@ -27,4 +39,11 @@ smart_ptr::~smart_ptr()
 		delete m_pobject;
 		m_pobject = nullptr;
 	}
+}
+
+
+template <typename T>
+T* smart_ptr::get()
+{
+	return m_pobject;
 }
