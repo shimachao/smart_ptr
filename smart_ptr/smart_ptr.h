@@ -21,7 +21,7 @@ private:
 
 template <typename T>
 smart_ptr::smart_ptr()
-	:m_pobject(nullptr), m_use_count(new unsigned(0))
+	:m_pobject(nullptr), m_use_count(new unsigned(1))
 {
 }
 
@@ -35,34 +35,15 @@ smart_ptr::smart_ptr(T*p)
 
 template <typename T>
 smart_ptr::smart_ptr(const smart_ptr& rhs)
+	:m_pobject(rhs.m_pobject), m_use_count(rhs.m_use_count)
 {
-	// 递减左侧计数
-	if (*m_use_count > 0)
-	{
-		*m_use_count--;
-	}
-	if (*m_use_count == 0)
-	{
-		delete m_pobject;
-	}
-
-	// 递增右侧计数
-	*(rhs.m_use_count)++;
-
-	m_pobject = rhs.m_pobject;
-	m_use_count = rhs.m_use_count;
 }
 
 
 template <typename T>
 smart_ptr::~smart_ptr()
 {
-	if (*m_use_count > 0)
-	{
-		*m_use_count--;
-	}
-
-	if (*m_use_count == 0)
+	if (--(*m_use_count) == 0)
 	{
 		delete m_pobject;
 		m_pobject = nullptr;
