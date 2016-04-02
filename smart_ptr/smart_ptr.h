@@ -17,7 +17,7 @@ public:
 	// 向bool的类型转换
 	explicit operator bool() const
 
-	T* get();
+	T* get() const;
 
 private:
 	unsigned* m_use_count = nullptr;
@@ -91,7 +91,7 @@ smart_ptr::~smart_ptr()
 
 
 template <typename T>
-T* smart_ptr::get()
+T* smart_ptr::get() const
 {
 	return m_pobject;
 }
