@@ -57,12 +57,12 @@ smart_ptr::smart_ptr(const smart_ptr& rhs)
 template <typename T>
 smart_ptr::~smart_ptr()
 {
-	if (m_use_count > 0)
+	if (*m_use_count > 0)
 	{
-		m_use_count--;
+		*m_use_count--;
 	}
 
-	if (m_use_count == 0 && m_pobject)
+	if (*m_use_count == 0)
 	{
 		delete m_pobject;
 		m_pobject = nullptr;
