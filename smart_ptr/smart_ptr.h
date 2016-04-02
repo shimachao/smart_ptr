@@ -42,7 +42,7 @@ smart_ptr::smart_ptr(const smart_ptr& rhs)
 
 
 template <typename T>
-smart_ptr& smart_ptr::smart_ptr(const smart_ptr &rhs)
+smart_ptr& smart_ptr::operator =(const smart_ptr &rhs)
 {
 	// 递增右侧运算对象的引用计数
 	++*rhs.m_use_count;
