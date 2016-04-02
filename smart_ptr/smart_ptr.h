@@ -13,21 +13,21 @@ public:
 	T* get();
 
 private:
-	unsigned m_use_count = 0;
+	unsigned* m_use_count = nullptr;
 	T* m_pobject = nullptr;
 };
 
 template <typename T>
 smart_ptr::smart_ptr()
+	:m_pobject(nullptr), m_use_count(new unsigned(0))
 {
 }
 
 
 template <typename T>
 smart_ptr::smart_ptr(T*p)
+	:m_pobject(p), m_use_count(new unsigned(1))
 {
-	m_pobject = p;
-	m_use_count = 1;
 }
 
 
