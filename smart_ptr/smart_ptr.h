@@ -10,6 +10,8 @@ public:
 	explicit smart_ptr(T*);
 	smart_ptr(const smart_ptr&);
 	smart_ptr& operator=(const smart_ptr&);
+	T& operator*() const;
+	T* operator->() const;
 
 	~smart_ptr();
 	// 向bool的类型转换
@@ -60,6 +62,20 @@ smart_ptr& smart_ptr::operator =(const smart_ptr &rhs)
 	m_pobject = rhs.m_pobject;
 
 	return *this; // 返回本对象
+}
+
+
+template <typename T>
+T& smart_ptr::operator*() const
+{
+	return m_pobject;
+}
+
+
+template <typename T>
+T* smart_ptr::operator->() const
+{
+	return &this->operator*();
 }
 
 
