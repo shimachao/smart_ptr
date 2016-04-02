@@ -12,6 +12,8 @@ public:
 	smart_ptr& operator=(const smart_ptr&);
 
 	~smart_ptr();
+	// 向bool的类型转换
+	explicit operator bool() const
 
 	T* get();
 
@@ -77,3 +79,11 @@ T* smart_ptr::get()
 {
 	return m_pobject;
 }
+
+
+template <typename T>
+smart_ptr::bool()
+{
+	return m_pobject != nullptr;
+}
+
