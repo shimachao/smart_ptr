@@ -107,7 +107,7 @@ T* smart_ptr::get() const
 
 
 template <typename T>
-smart_ptr::bool()
+smart_ptr::operator bool() const
 {
 	return m_pobject != nullptr;
 }
