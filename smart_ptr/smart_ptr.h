@@ -41,6 +41,7 @@ template <typename T>
 smart_ptr::smart_ptr(const smart_ptr& rhs)
 	:m_pobject(rhs.m_pobject), m_use_count(rhs.m_use_count)
 {
+	*m_use_count++;
 }
 
 
@@ -101,4 +102,3 @@ smart_ptr::bool()
 {
 	return m_pobject != nullptr;
 }
-
