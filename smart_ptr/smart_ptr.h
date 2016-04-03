@@ -14,7 +14,9 @@ public:
 
 	~smart_ptr();
 	// 向bool的类型转换
-	explicit operator bool() const
+	explicit operator bool() const;
+
+	bool unique();
 
 	T* get() const;
 
@@ -87,6 +89,13 @@ smart_ptr::~smart_ptr()
 		delete m_pobject;
 		m_pobject = nullptr;
 	}
+}
+
+
+template <typename T>
+bool smart_ptr::unique()
+{
+	return *m_use_count == 1;
 }
 
 
