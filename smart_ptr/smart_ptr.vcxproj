@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClInclude Include="smart_ptr.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC80CF18-9B58-4932-9360-D3D7F3559E1F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

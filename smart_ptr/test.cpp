@@ -19,6 +19,7 @@ int main()
 
 	cout << sp->a << endl;
 	cout << sp->b << endl;
+	cout << (*sp).a << endl;
 
 	return 0;
 }
