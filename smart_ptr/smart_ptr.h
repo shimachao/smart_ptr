@@ -70,7 +70,7 @@ smart_ptr<T>& smart_ptr<T>::operator =(const smart_ptr &rhs)
 template <typename T>
 T& smart_ptr<T>::operator*() const
 {
-	return m_pobject;
+	return *m_pobject;
 }
 
 
