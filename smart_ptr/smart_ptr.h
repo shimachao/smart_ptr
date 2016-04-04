@@ -17,6 +17,8 @@ public:
 	explicit operator bool() const;
 
 	bool unique();
+	void reset();
+	void reset(T* p);
 
 	T* get() const;
 
@@ -96,6 +98,36 @@ template <typename T>
 bool smart_ptr<T>::unique()
 {
 	return *m_use_count == 1;
+}
+
+
+template <typename T>
+void smart_ptr<T>::reset()
+{
+	m_use_count--;
+
+	if (m_use_count == 0)
+	{
+		delete m_pobject;
+	}
+
+	m_pobject = nullptr;
+	m_use_count = 1;
+}
+
+
+template <typename T>
+void smart_ptr<T>::reset(T* p)
+{
+	m_use_count--;
+
+	if (m_use_count == 0)
+	{
+		delete m_pobject;
+	}
+
+	m_pobject = p;
+	m_use_count = 1;
 }
 
 
