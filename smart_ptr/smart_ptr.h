@@ -26,21 +26,21 @@ private:
 };
 
 template <typename T>
-smart_ptr::smart_ptr()
+smart_ptr<T>::smart_ptr()
 	:m_pobject(nullptr), m_use_count(new unsigned(1))
 {
 }
 
 
 template <typename T>
-smart_ptr::smart_ptr(T*p)
+smart_ptr<T>::smart_ptr(T*p)
 	:m_pobject(p), m_use_count(new unsigned(1))
 {
 }
 
 
 template <typename T>
-smart_ptr::smart_ptr(const smart_ptr& rhs)
+smart_ptr<T>::smart_ptr(const smart_ptr& rhs)
 	:m_pobject(rhs.m_pobject), m_use_count(rhs.m_use_count)
 {
 	*m_use_count++;
@@ -48,7 +48,7 @@ smart_ptr::smart_ptr(const smart_ptr& rhs)
 
 
 template <typename T>
-smart_ptr& smart_ptr::operator =(const smart_ptr &rhs)
+smart_ptr<T>& smart_ptr<T>::operator =(const smart_ptr &rhs)
 {
 	// 递增右侧运算对象的引用计数
 	++*rhs.m_use_count;
@@ -68,21 +68,21 @@ smart_ptr& smart_ptr::operator =(const smart_ptr &rhs)
 
 
 template <typename T>
-T& smart_ptr::operator*() const
+T& smart_ptr<T>::operator*() const
 {
 	return m_pobject;
 }
 
 
 template <typename T>
-T* smart_ptr::operator->() const
+T* smart_ptr<T>::operator->() const
 {
 	return &this->operator*();
 }
 
 
 template <typename T>
-smart_ptr::~smart_ptr()
+smart_ptr<T>::~smart_ptr()
 {
 	if (--(*m_use_count) == 0)
 	{
@@ -93,21 +93,21 @@ smart_ptr::~smart_ptr()
 
 
 template <typename T>
-bool smart_ptr::unique()
+bool smart_ptr<T>::unique()
 {
 	return *m_use_count == 1;
 }
 
 
 template <typename T>
-T* smart_ptr::get() const
+T* smart_ptr<T>::get() const
 {
 	return m_pobject;
 }
 
 
 template <typename T>
-smart_ptr::operator bool() const
+smart_ptr<T>::operator bool() const
 {
 	return m_pobject != nullptr;
 }
