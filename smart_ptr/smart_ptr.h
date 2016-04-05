@@ -21,7 +21,8 @@ public:
 
 	bool unique();
 	void reset();
-	void reset(T* p);
+	void reset(T*);
+	void reset(T*, std::function<void(T*)>);
 
 	T* get() const;
 
@@ -168,6 +169,14 @@ void smart_ptr<T>::reset(T* p)
 
 	m_pobject = p;
 	m_use_count = 1;
+}
+
+
+template <typename T>
+void smart_ptr<T>::reset(T *p, std::function<void(T*)> del)
+{
+	m_del = del;
+	reset(p);
 }
 
 
