@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 // 模仿shared_ptr实现一个智能指针
 template <typename T>
 class smart_ptr
@@ -8,6 +10,7 @@ public:
 	smart_ptr();
 	explicit smart_ptr(T*);
 	smart_ptr(const smart_ptr&);
+	smart_ptr(T*, std::function<void(T*)>);
 	smart_ptr& operator=(const smart_ptr&);
 	T& operator*() const;
 	T* operator->() const;
@@ -25,6 +28,7 @@ public:
 private:
 	unsigned* m_use_count = nullptr;
 	T* m_pobject = nullptr;
+	std::function<void(T*)> m_del = nullptr;
 };
 
 template <typename T>
@@ -35,8 +39,15 @@ smart_ptr<T>::smart_ptr()
 
 
 template <typename T>
-smart_ptr<T>::smart_ptr(T*p)
+smart_ptr<T>::smart_ptr(T *p)
 	:m_pobject(p), m_use_count(new unsigned(1))
+{
+}
+
+
+template <typename T>
+smart_ptr<T>::smart_ptr(T *p, std::function<void(T*)> del)
+	:m_pobject(p), m_use_count(new unsigned(1)), m_del(del)
 {
 }
 
@@ -58,7 +69,15 @@ smart_ptr<T>& smart_ptr<T>::operator =(const smart_ptr &rhs)
 	if (--*m_use_count == 0)
 	{
 		// 如果管理的对象没有其他用户了，则释放对象分配的成员
-		delete m_pobject;
+		if (m_del)
+		{
+			m_del(m_pobject);
+		}
+		else
+		{
+			delete m_pobject;
+		}
+
 		delete m_use_count;
 	}
 
@@ -88,7 +107,14 @@ smart_ptr<T>::~smart_ptr()
 {
 	if (--(*m_use_count) == 0)
 	{
-		delete m_pobject;
+		if (m_del)
+		{
+			m_del(m_pobject);
+		}
+		else
+		{
+			delete m_pobject;
+		}
 		m_pobject = nullptr;
 	}
 }
@@ -108,7 +134,14 @@ void smart_ptr<T>::reset()
 
 	if (m_use_count == 0)
 	{
-		delete m_pobject;
+		if (m_del)
+		{
+			m_del(m_pobject);
+		}
+		else
+		{
+			delete m_pobject;
+		}
 	}
 
 	m_pobject = nullptr;
@@ -123,7 +156,14 @@ void smart_ptr<T>::reset(T* p)
 
 	if (m_use_count == 0)
 	{
-		delete m_pobject;
+		if (m_del)
+		{
+			m_del(m_pobject);
+		}
+		else
+		{
+			delete m_pobject;
+		}
 	}
 
 	m_pobject = p;
