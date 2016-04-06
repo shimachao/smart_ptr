@@ -27,10 +27,19 @@ public:
 	T* get() const;
 
 private:
+	// Ä¬ÈÏµÄdeleter
+	static std::function<void(T*)> default_del;
+
+private:
 	unsigned* m_use_count = nullptr;
 	T* m_pobject = nullptr;
-	std::function<void(T*)> m_del = nullptr;
+	std::function<void(T*)> m_del = default_del;
+	
 };
+
+template <typename T>
+std::function<void(T*)> smart_ptr<T>::default_del = [](T*p) {delete p; p = nullptr; };
+
 
 template <typename T>
 smart_ptr<T>::smart_ptr()
