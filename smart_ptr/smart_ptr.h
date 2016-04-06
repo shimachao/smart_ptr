@@ -34,7 +34,6 @@ private:
 	unsigned* m_use_count = nullptr;
 	T* m_pobject = nullptr;
 	std::function<void(T*)> m_del = default_del;
-	
 };
 
 template <typename T>
@@ -79,15 +78,8 @@ smart_ptr<T>& smart_ptr<T>::operator =(const smart_ptr &rhs)
 	if (--*m_use_count == 0)
 	{
 		// 如果管理的对象没有其他用户了，则释放对象分配的成员
-		if (m_del)
-		{
-			m_del(m_pobject);
-		}
-		else
-		{
-			delete m_pobject;
-		}
-
+		m_del(m_pobject);
+		
 		delete m_use_count;
 	}
 
