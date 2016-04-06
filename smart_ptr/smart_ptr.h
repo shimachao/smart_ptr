@@ -63,7 +63,7 @@ smart_ptr<T>::smart_ptr(T *p, std::function<void(T*)> del)
 
 template <typename T>
 smart_ptr<T>::smart_ptr(const smart_ptr& rhs)
-	:m_pobject(rhs.m_pobject), m_use_count(rhs.m_use_count)
+	:m_pobject(rhs.m_pobject), m_use_count(rhs.m_use_count), m_del(rhs.m_del)
 {
 	*m_use_count++;
 }
@@ -72,6 +72,8 @@ smart_ptr<T>::smart_ptr(const smart_ptr& rhs)
 template <typename T>
 smart_ptr<T>& smart_ptr<T>::operator =(const smart_ptr &rhs)
 {
+	// 使用rhs的deleter
+	m_del = rhs.m_del;
 	// 递增右侧运算对象的引用计数
 	++*rhs.m_use_count;
 	// 递减本对象的引用计数
@@ -135,14 +137,13 @@ void smart_ptr<T>::reset()
 
 	m_pobject = nullptr;
 	m_use_count = 1;
+	m_del = default_del;
 }
 
 
 template <typename T>
 void smart_ptr<T>::reset(T* p)
 {
-	m_del = default_del;
-
 	m_use_count--;
 
 	if (m_use_count == 0)
@@ -152,14 +153,15 @@ void smart_ptr<T>::reset(T* p)
 
 	m_pobject = p;
 	m_use_count = 1;
+	m_del = default_del;
 }
 
 
 template <typename T>
 void smart_ptr<T>::reset(T *p, std::function<void(T*)> del)
 {
-	m_del = del;
 	reset(p);
+	m_del = del;
 }
 
 
