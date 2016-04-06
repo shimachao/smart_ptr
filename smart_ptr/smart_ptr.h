@@ -109,14 +109,8 @@ smart_ptr<T>::~smart_ptr()
 {
 	if (--(*m_use_count) == 0)
 	{
-		if (m_del)
-		{
-			m_del(m_pobject);
-		}
-		else
-		{
-			delete m_pobject;
-		}
+		m_del(m_pobject);
+		
 		m_pobject = nullptr;
 	}
 }
