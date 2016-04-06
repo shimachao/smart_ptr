@@ -162,18 +162,13 @@ void smart_ptr<T>::reset()
 template <typename T>
 void smart_ptr<T>::reset(T* p)
 {
+	m_del = default_del;
+
 	m_use_count--;
 
 	if (m_use_count == 0)
 	{
-		if (m_del)
-		{
-			m_del(m_pobject);
-		}
-		else
-		{
-			delete m_pobject;
-		}
+		m_del(m_pobject);
 	}
 
 	m_pobject = p;
