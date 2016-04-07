@@ -40,6 +40,10 @@ template <typename T>
 std::function<void(T*)> smart_ptr<T>::default_del = [](T*p) {delete p; p = nullptr; };
 
 
+template <typename T, typename... Args>
+smart_ptr<T>& make_smart(const Args&... args);
+
+
 template <typename T>
 smart_ptr<T>::smart_ptr()
 	:m_pobject(nullptr), m_use_count(new unsigned(1))
