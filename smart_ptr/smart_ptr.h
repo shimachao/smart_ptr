@@ -31,7 +31,7 @@ private:
 	static std::function<void(T*)> default_del;
 
 private:
-	unsigned* m_use_count = nullptr;
+	unsigned* m_p_use_count = nullptr;
 	T* m_pobject = nullptr;
 	std::function<void(T*)> m_del = default_del;
 };
@@ -50,30 +50,30 @@ smart_ptr<T> make_smart(Args&&... args)
 
 template <typename T>
 smart_ptr<T>::smart_ptr()
-	:m_pobject(nullptr), m_use_count(new unsigned(1))
+	:m_pobject(nullptr), m_p_use_count(new unsigned(1))
 {
 }
 
 
 template <typename T>
 smart_ptr<T>::smart_ptr(T *p)
-	:m_pobject(p), m_use_count(new unsigned(1))
+	:m_pobject(p), m_p_use_count(new unsigned(1))
 {
 }
 
 
 template <typename T>
 smart_ptr<T>::smart_ptr(T *p, std::function<void(T*)> del)
-	:m_pobject(p), m_use_count(new unsigned(1)), m_del(del)
+	:m_pobject(p), m_p_use_count(new unsigned(1)), m_del(del)
 {
 }
 
 
 template <typename T>
 smart_ptr<T>::smart_ptr(const smart_ptr& rhs)
-	:m_pobject(rhs.m_pobject), m_use_count(rhs.m_use_count), m_del(rhs.m_del)
+	:m_pobject(rhs.m_pobject), m_p_use_count(rhs.m_p_use_count), m_del(rhs.m_del)
 {
-	(*m_use_count)++;
+	(*m_p_use_count)++;
 }
 
 
@@ -83,17 +83,17 @@ smart_ptr<T>& smart_ptr<T>::operator =(const smart_ptr &rhs)
 	// 使用rhs的deleter
 	m_del = rhs.m_del;
 	// 递增右侧运算对象的引用计数
-	++*rhs.m_use_count;
+	++*rhs.m_p_use_count;
 	// 递减本对象的引用计数
-	if (--*m_use_count == 0)
+	if (--*m_p_use_count == 0)
 	{
 		// 如果管理的对象没有其他用户了，则释放对象分配的成员
 		m_del(m_pobject);
 		
-		delete m_use_count;
+		delete m_p_use_count;
 	}
 
-	m_use_count = rhs.m_use_count;
+	m_p_use_count = rhs.m_p_use_count;
 	m_pobject = rhs.m_pobject;
 
 	return *this; // 返回本对象
@@ -117,7 +117,7 @@ T* smart_ptr<T>::operator->() const
 template <typename T>
 smart_ptr<T>::~smart_ptr()
 {
-	if (--(*m_use_count) == 0)
+	if (--(*m_p_use_count) == 0)
 	{
 		m_del(m_pobject);
 		
@@ -129,22 +129,22 @@ smart_ptr<T>::~smart_ptr()
 template <typename T>
 bool smart_ptr<T>::unique()
 {
-	return *m_use_count == 1;
+	return *m_p_use_count == 1;
 }
 
 
 template <typename T>
 void smart_ptr<T>::reset()
 {
-	m_use_count--;
+	m_p_use_count--;
 
-	if (m_use_count == 0)
+	if (m_p_use_count == 0)
 	{
 		m_del(m_pobject);
 	}
 
 	m_pobject = nullptr;
-	m_use_count = 1;
+	m_p_use_count = 1;
 	m_del = default_del;
 }
 
@@ -152,15 +152,15 @@ void smart_ptr<T>::reset()
 template <typename T>
 void smart_ptr<T>::reset(T* p)
 {
-	m_use_count--;
+	m_p_use_count--;
 
-	if (m_use_count == 0)
+	if (m_p_use_count == 0)
 	{
 		m_del(m_pobject);
 	}
 
 	m_pobject = p;
-	m_use_count = 1;
+	m_p_use_count = 1;
 	m_del = default_del;
 }
 
