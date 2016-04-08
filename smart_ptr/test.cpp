@@ -23,7 +23,8 @@ int main()
 	cout << sp->b << endl;
 	cout << (*sp).a << endl;
 
-	auto sp2 = make_smart<MyStruct>(10, 200);
+	auto sp2 = make_smart<MyStruct>(100, 200);
+	cout << sp2->a << endl;
 	cout << sp2->b << endl;
 
 	return 0;
