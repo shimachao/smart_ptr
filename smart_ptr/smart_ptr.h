@@ -73,7 +73,7 @@ template <typename T>
 smart_ptr<T>::smart_ptr(const smart_ptr& rhs)
 	:m_pobject(rhs.m_pobject), m_use_count(rhs.m_use_count), m_del(rhs.m_del)
 {
-	*m_use_count++;
+	(*m_use_count)++;
 }
 
 
