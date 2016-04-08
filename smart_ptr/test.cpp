@@ -5,6 +5,8 @@ using std::endl;
 
 struct MyStruct
 {
+	MyStruct() = default;
+	MyStruct(int a, int b) :a(a), b(b) {}
 	int a;
 	int b;
 };
@@ -20,6 +22,9 @@ int main()
 	cout << sp->a << endl;
 	cout << sp->b << endl;
 	cout << (*sp).a << endl;
+
+	auto sp2 = make_smart<MyStruct>(10, 200);
+	cout << sp2->b << endl;
 
 	return 0;
 }
