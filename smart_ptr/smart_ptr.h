@@ -41,7 +41,11 @@ std::function<void(T*)> smart_ptr<T>::default_del = [](T*p) {delete p; p = nullp
 
 
 template <typename T, typename... Args>
-smart_ptr<T>& make_smart(Args&... args);
+smart_ptr<T> make_smart(Args&&... args)
+{
+	smart_ptr<T> sp(new T(std::forward<Args>(args)...));
+	return sp;
+}
 
 
 template <typename T>
