@@ -83,9 +83,9 @@ smart_ptr<T>& smart_ptr<T>::operator =(const smart_ptr &rhs)
 	// 使用rhs的deleter
 	m_del = rhs.m_del;
 	// 递增右侧运算对象的引用计数
-	++*rhs.m_p_use_count;
+	++(*rhs.m_p_use_count);
 	// 递减本对象的引用计数
-	if (--*m_p_use_count == 0)
+	if (--(*m_p_use_count) == 0)
 	{
 		// 如果管理的对象没有其他用户了，则释放对象分配的成员
 		m_del(m_pobject);
@@ -136,15 +136,15 @@ bool smart_ptr<T>::unique()
 template <typename T>
 void smart_ptr<T>::reset()
 {
-	m_p_use_count--;
+	(*m_p_use_count)--;
 
-	if (m_p_use_count == 0)
+	if (*m_p_use_count == 0)
 	{
 		m_del(m_pobject);
 	}
 
 	m_pobject = nullptr;
-	m_p_use_count = 1;
+	*m_p_use_count = 1;
 	m_del = default_del;
 }
 
@@ -152,15 +152,15 @@ void smart_ptr<T>::reset()
 template <typename T>
 void smart_ptr<T>::reset(T* p)
 {
-	m_p_use_count--;
+	(*m_p_use_count)--;
 
-	if (m_p_use_count == 0)
+	if (*m_p_use_count == 0)
 	{
 		m_del(m_pobject);
 	}
 
 	m_pobject = p;
-	m_p_use_count = 1;
+	*m_p_use_count = 1;
 	m_del = default_del;
 }
 
