@@ -23,6 +23,7 @@ public:
 	void reset();
 	void reset(T*);
 	void reset(T*, std::function<void(T*)>);
+	T* release();
 
 	T* get() const;
 
@@ -172,6 +173,24 @@ void smart_ptr<T>::reset(T *p, std::function<void(T*)> del)
 {
 	reset(p);
 	m_del = del;
+}
+
+
+template <typename T>
+T* smart_ptr<T>::release()
+{
+	(*m_p_use_count)--;
+
+	if (*m_p_use_count == 0)
+	{
+		delete m_p_use_count;
+		m_p_use_count = nullptr;
+	}
+
+	auto p = m_pobject;
+	m_pobject = nullptr;
+
+	return p;
 }
 
 
