@@ -27,5 +27,10 @@ int main()
 	cout << sp2->a << endl;
 	cout << sp2->b << endl;
 
+	auto p = sp2.release();
+	cout << p->a << endl;
+	cout << p->b << endl;
+	delete p;
+
 	return 0;
 }
