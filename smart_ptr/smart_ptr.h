@@ -183,8 +183,7 @@ T* smart_ptr<T>::release()
 
 	if (*m_p_use_count == 0)
 	{
-		delete m_p_use_count;
-		m_p_use_count = nullptr;
+		*m_p_use_count = 1;
 	}
 
 	auto p = m_pobject;
